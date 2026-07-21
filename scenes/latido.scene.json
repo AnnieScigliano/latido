@@ -1,6 +1,6 @@
 {
   "scene_id": "latido",
-  "scene_version": 2,
+  "scene_version": 3,
   "name": "Latido",
   "description": "Two-person laser-cymatics piece. The focused HarMoCAP dancer's energy sounds harmonics 1-5 (harmonic_envelope, natural rolloff with a floor so the field is audible even when still); the dancer's postural features drive per-harmonic PHASE velocities (harmonics 2-5; harmonic 1 is the phase anchor) so the projected figure morphs; the ECG beat edge pulses master gain so the figure brightens on each heartbeat. Requires the phase_accumulator transform.",
   "tags": ["latido", "performance", "laser-cymatics"],
@@ -178,12 +178,12 @@
     },
     {
       "route_id": "ecg-beat-to-master-pulse",
-      "route_version": 1,
+      "route_version": 2,
       "enabled": true,
-      "label": "Heartbeat edge -> master gain flash (figure brightens per beat)",
+      "label": "Heartbeat -> master gain pulse that breathes (swells per beat, decays with the measured RR interval)",
       "inputs": [{"channel": "ecg.beat"}],
       "transforms": [
-        {"type": "gate", "threshold": 0.5, "hysteresis": 0.1, "mode": "rising_edge", "closed": {"value": 0.8}}
+        {"type": "beat_envelope", "peak": 1.0, "floor": 0.8, "threshold": 0.5, "tau_ratio": 0.3, "min_interval_ms": 300.0}
       ],
       "destination": {"instrument_id": "shaper", "capability": "master_gain", "bindings": {}, "argument": "gain"},
       "validity": {"held": "reject", "min_confidence": 0.8, "invalid": "release"}

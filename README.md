@@ -81,10 +81,11 @@ Phase routes use `invalid: "suppress"`, so if the dancer leaves frame the Shaper
 holds its last phase (the figure freezes rather than snapping to zero), and the
 accumulator's `max_dt_ms` clamps the step on resume so it re-enters smoothly.
 
-**Heartbeat → amplitude (the figure pulses).** `ecg.beat` → a `rising_edge` gate
-→ `master_gain`, flashing 0.8→1.0 per beat (the same edge pattern `event_demo`
-uses for its nature pulse). A smoother decaying pulse awaits a future
-`beat_envelope` transform; the edge flash is the stock mechanism today.
+**Heartbeat → amplitude (the figure pulses).** `ecg.beat` → the `beat_envelope`
+transform → `master_gain`. Each beat swells master to `1.0` and decays back
+toward the `0.8` floor with a time constant auto-scaled from the measured RR
+interval (`tau_ratio 0.3`) — so the figure *breathes* with the heart rather than
+flashing. A `300 ms` refractory guard rejects double-fires.
 
 ## Validate it loads
 
@@ -114,9 +115,10 @@ driver and `cymatic-control/test_ecg_stream.py` through the ecg driver.
 
 ## Status
 
-`v0.2` — 5 aggregators, 10 routes; compiles against the real weaver compiler.
-The `phase_accumulator` transform is **merged** into `harmonic-weaver` (PR #1).
-The `harmonic_envelope` capability is validated against a *synthesized* manifest
-entry (the local rehearsal artifact predates it) — **confirm against the live
-Shaper manifest** on first launch. Heartbeat is still a per-beat flash; a
-`beat_envelope` transform would make it breathe.
+`v0.3` — 5 aggregators, 10 routes; compiles against the real weaver compiler.
+- `phase_accumulator` transform: **merged** into `harmonic-weaver` (PR #1).
+- `beat_envelope` transform (breathing heartbeat pulse): **PR open** on branch
+  `feat/beat-envelope-transform` — the scene depends on it merging.
+- `harmonic_envelope` capability is validated against a *synthesized* manifest
+  entry (the local artifact predates it) — **confirm against the live Shaper
+  manifest** on first launch.
