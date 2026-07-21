@@ -43,10 +43,27 @@ person B ─► HarMoCAP ─► weaver harmocap driver ─►  harmocap.slot_{0,
 ## The mapping (as built in the scene)
 
 **Focus-follow.** Both dancers' features exist as `harmocap.slot_0_*` and
-`slot_1_*`; four **aggregators** collapse each feature to the *focused* slot via
+`slot_1_*`; five **aggregators** collapse each feature to the *focused* slot via
 an `include_when: slot_N_focused == 1` predicate (the same pattern
-`event_demo.scene.json` uses for keypoints), producing `focused_expansion.value`,
-`focused_verticality.value`, `focused_symmetry.value`, `focused_elbow_r.value`.
+`event_demo.scene.json` uses for keypoints), producing `focused_energy.value`,
+`focused_expansion.value`, `focused_verticality.value`, `focused_symmetry.value`,
+`focused_elbow_r.value`.
+
+**Sounding the field (the figure exists at all).** Phase does nothing to a silent
+partial, so the focused dancer's `kinetic_energy` sounds harmonics 1–5 via the
+Shaper's `harmonic_envelope` capability — each with a **floor** (so the field is
+audible even when the dancer is still) and a **descending rolloff** (H1 loudest →
+H5 softest, a natural harmonic timbre). Movement swells the partials in; when the
+dancer leaves frame the field releases to silent. This is also what makes the
+heartbeat's master-gain pulse visible — a brighter flash on an already-lit figure.
+
+| harmonic | envelope gain range (floor → full) |
+|---|---|
+| H1 (fundamental / anchor) | 0.55 → 0.90 |
+| H2 | 0.45 → 0.78 |
+| H3 | 0.35 → 0.66 |
+| H4 | 0.28 → 0.56 |
+| H5 | 0.22 → 0.48 |
 
 **Movement → phase (the figure morphs).** Each focused feature is scaled to an
 angular velocity (deg/s) and integrated by `phase_accumulator` into a harmonic's
@@ -97,6 +114,9 @@ driver and `cymatic-control/test_ecg_stream.py` through the ecg driver.
 
 ## Status
 
-`v0.1` — scene compiles against the real weaver compiler and the installed Shaper
-manifest. Depends on the `phase_accumulator` transform PR landing in
-`harmonic-weaver`.
+`v0.2` — 5 aggregators, 10 routes; compiles against the real weaver compiler.
+The `phase_accumulator` transform is **merged** into `harmonic-weaver` (PR #1).
+The `harmonic_envelope` capability is validated against a *synthesized* manifest
+entry (the local rehearsal artifact predates it) — **confirm against the live
+Shaper manifest** on first launch. Heartbeat is still a per-beat flash; a
+`beat_envelope` transform would make it breathe.

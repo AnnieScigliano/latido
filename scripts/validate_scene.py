@@ -33,13 +33,31 @@ def main() -> int:
         return 2
     status = json.loads(artifacts[-1].read_text(encoding="utf-8"))
     shaper = next(i for i in status["engine"]["instruments"] if i["instrument_id"] == "shaper")
-    instrument_manifests = {"shaper": {"capabilities": shaper["capabilities"]}}
+    capabilities = list(shaper["capabilities"])
+
+    # The local rehearsal artifact predates the harmonic_envelope capability
+    # (upstream commit 90b0492). Synthesize it from the proven event_demo shape
+    # (capability harmonic_envelope, binding N, argument gain [0,1]) so the
+    # compile-check covers the sounding routes. CONFIRM against the live shaper.
+    if not any(c.get("name") == "harmonic_envelope" for c in capabilities):
+        print("note: synthesizing harmonic_envelope capability (absent from local "
+              "artifact) — confirm against the live shaper manifest")
+        capabilities.append({
+            "name": "harmonic_envelope",
+            "address_pattern": "/digital/harmonic/{N}/envelope",
+            "parameters": {"N": {"type": "int32", "bounds": [1, 32]}},
+            "arguments": [{"name": "gain", "type": "float32", "range": [0.0, 1.0]}],
+            "read": True,
+            "write": True,
+        })
+    instrument_manifests = {"shaper": {"capabilities": capabilities}}
 
     # Channel ranges the scene references (canonical HarMoCAP feature ranges + ecg.beat).
     unit, signed = (0.0, 1.0), (-1.0, 1.0)
     channel_ranges: dict[str, tuple[float, float]] = {"ecg.beat": unit}
     for slot in (0, 1):
         channel_ranges[f"harmocap.slot_{slot}_focused"] = unit
+        channel_ranges[f"harmocap.slot_{slot}_kinetic_energy"] = unit
         channel_ranges[f"harmocap.slot_{slot}_expansion"] = unit
         channel_ranges[f"harmocap.slot_{slot}_verticality"] = signed
         channel_ranges[f"harmocap.slot_{slot}_symmetry"] = unit
