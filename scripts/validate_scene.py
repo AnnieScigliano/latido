@@ -26,30 +26,30 @@ def main() -> int:
 
     scene = json.loads(SCENE.read_text(encoding="utf-8"))
 
-    # Real Shaper manifest, extracted from a rehearsal runtime_status artifact.
-    artifacts = sorted((WEAVER / "rehearsal" / "artifacts").glob("*/runtime_status.json"))
-    if not artifacts:
-        print("no runtime_status artifact found; run a rehearsal first", file=sys.stderr)
-        return 2
-    status = json.loads(artifacts[-1].read_text(encoding="utf-8"))
-    shaper = next(i for i in status["engine"]["instruments"] if i["instrument_id"] == "shaper")
-    capabilities = list(shaper["capabilities"])
-
-    # The local rehearsal artifact predates the harmonic_envelope capability
-    # (upstream commit 90b0492). Synthesize it from the proven event_demo shape
-    # (capability harmonic_envelope, binding N, argument gain [0,1]) so the
-    # compile-check covers the sounding routes. CONFIRM against the live shaper.
-    if not any(c.get("name") == "harmonic_envelope" for c in capabilities):
-        print("note: synthesizing harmonic_envelope capability (absent from local "
-              "artifact) — confirm against the live shaper manifest")
-        capabilities.append({
-            "name": "harmonic_envelope",
-            "address_pattern": "/digital/harmonic/{N}/envelope",
-            "parameters": {"N": {"type": "int32", "bounds": [1, 32]}},
-            "arguments": [{"name": "gain", "type": "float32", "range": [0.0, 1.0]}],
-            "read": True,
-            "write": True,
-        })
+    # Prefer the real Shaper manifest from a sibling harmonic-shaper checkout;
+    # fall back to a rehearsal runtime_status artifact (synthesizing the
+    # harmonic_envelope capability if that artifact predates it).
+    real_contract = WEAVER.parent / "harmonic-shaper" / "contracts" / "shaper.contract.json"
+    if real_contract.exists():
+        capabilities = json.loads(real_contract.read_text(encoding="utf-8"))["capabilities"]
+        print(f"using real Shaper manifest: {real_contract}")
+    else:
+        artifacts = sorted((WEAVER / "rehearsal" / "artifacts").glob("*/runtime_status.json"))
+        if not artifacts:
+            print("no shaper manifest and no runtime_status artifact found", file=sys.stderr)
+            return 2
+        status = json.loads(artifacts[-1].read_text(encoding="utf-8"))
+        shaper = next(i for i in status["engine"]["instruments"] if i["instrument_id"] == "shaper")
+        capabilities = list(shaper["capabilities"])
+        if not any(c.get("name") == "harmonic_envelope" for c in capabilities):
+            print("note: synthesizing harmonic_envelope capability (absent from local artifact)")
+            capabilities.append({
+                "name": "harmonic_envelope",
+                "address_pattern": "/digital/harmonic/{N}/envelope",
+                "parameters": {"N": {"type": "int32", "bounds": [1, 32]}},
+                "arguments": [{"name": "gain", "type": "float32", "range": [0.0, 1.0]}],
+                "read": True, "write": True,
+            })
     instrument_manifests = {"shaper": {"capabilities": capabilities}}
 
     # Channel ranges the scene references (canonical HarMoCAP feature ranges + ecg.beat).
