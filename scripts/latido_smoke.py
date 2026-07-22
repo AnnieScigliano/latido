@@ -48,17 +48,21 @@ BEAT_PERIOD_S = 60.0 / BPM
 
 
 def latido_shaper_safety(contract_id: str) -> dict:
-    """The stock shaper safety profile only resets harmonic_envelope + panic.
-    Latido also writes harmonic_phase (2-5) and master_gain, so extend the
-    reset defaults to cover them — the live stack needs the same extension."""
+    """Ensure the shaper safety profile resets harmonic_phase (1-5) + master_gain,
+    which Latido drives. Once weaver PR feat/shaper-safety-phase-master is merged
+    these are already present, so append only what's missing (idempotent)."""
     profile = shaper_safety_profile(contract_id)
+    have = {(d["capability"], tuple(sorted(d.get("bindings", {}).items())))
+            for d in profile["reset_defaults"]}
     for n in range(1, 6):
+        if ("harmonic_phase", (("N", n),)) not in have:
+            profile["reset_defaults"].append(
+                {"capability": "harmonic_phase", "bindings": {"N": n}, "argument": "phase_degrees", "value": 0.0}
+            )
+    if ("master_gain", ()) not in have:
         profile["reset_defaults"].append(
-            {"capability": "harmonic_phase", "bindings": {"N": n}, "argument": "phase_degrees", "value": 0.0}
+            {"capability": "master_gain", "bindings": {}, "argument": "gain", "value": 0.8}
         )
-    profile["reset_defaults"].append(
-        {"capability": "master_gain", "bindings": {}, "argument": "gain", "value": 0.8}
-    )
     return profile
 
 
