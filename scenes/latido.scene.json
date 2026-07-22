@@ -1,9 +1,13 @@
 {
   "scene_id": "latido",
-  "scene_version": 3,
+  "scene_version": 1,
   "name": "Latido",
   "description": "Two-person laser-cymatics piece. The focused HarMoCAP dancer's energy sounds harmonics 1-5 (harmonic_envelope, natural rolloff with a floor so the field is audible even when still); the dancer's postural features drive per-harmonic PHASE velocities (harmonics 2-5; harmonic 1 is the phase anchor) so the projected figure morphs; the ECG beat edge pulses master gain so the figure brightens on each heartbeat. Requires the phase_accumulator transform.",
-  "tags": ["latido", "performance", "laser-cymatics"],
+  "tags": [
+    "latido",
+    "performance",
+    "laser-cymatics"
+  ],
   "created_at_us": 0,
   "updated_at_us": 0,
   "aggregators": [
@@ -13,12 +17,36 @@
       "derived_source_id": "focused_energy",
       "output_channel": "value",
       "inputs": [
-        {"channel": "harmocap.slot_0_kinetic_energy", "include_when": {"channel": "harmocap.slot_0_focused", "op": "eq", "value": 1.0}},
-        {"channel": "harmocap.slot_1_kinetic_energy", "include_when": {"channel": "harmocap.slot_1_focused", "op": "eq", "value": 1.0}}
+        {
+          "channel": "harmocap.slot_0_kinetic_energy",
+          "include_when": {
+            "channel": "harmocap.slot_0_focused",
+            "op": "eq",
+            "value": 1.0
+          }
+        },
+        {
+          "channel": "harmocap.slot_1_kinetic_energy",
+          "include_when": {
+            "channel": "harmocap.slot_1_focused",
+            "op": "eq",
+            "value": 1.0
+          }
+        }
       ],
       "operator": "mean",
-      "cadence": {"mode": "on_input", "max_rate_hz": 30.0},
-      "validity": {"min_valid_count": 1, "min_observed_count": 1, "max_age_ms": 250.0, "include_held": false, "held_max_ms": 0.0, "confidence": "minimum"}
+      "cadence": {
+        "mode": "on_input",
+        "max_rate_hz": 30.0
+      },
+      "validity": {
+        "min_valid_count": 1,
+        "min_observed_count": 1,
+        "max_age_ms": 250.0,
+        "include_held": false,
+        "held_max_ms": 0.0,
+        "confidence": "minimum"
+      }
     },
     {
       "aggregator_id": "focused-expansion",
@@ -26,12 +54,36 @@
       "derived_source_id": "focused_expansion",
       "output_channel": "value",
       "inputs": [
-        {"channel": "harmocap.slot_0_expansion", "include_when": {"channel": "harmocap.slot_0_focused", "op": "eq", "value": 1.0}},
-        {"channel": "harmocap.slot_1_expansion", "include_when": {"channel": "harmocap.slot_1_focused", "op": "eq", "value": 1.0}}
+        {
+          "channel": "harmocap.slot_0_expansion",
+          "include_when": {
+            "channel": "harmocap.slot_0_focused",
+            "op": "eq",
+            "value": 1.0
+          }
+        },
+        {
+          "channel": "harmocap.slot_1_expansion",
+          "include_when": {
+            "channel": "harmocap.slot_1_focused",
+            "op": "eq",
+            "value": 1.0
+          }
+        }
       ],
       "operator": "mean",
-      "cadence": {"mode": "on_input", "max_rate_hz": 60.0},
-      "validity": {"min_valid_count": 1, "min_observed_count": 1, "max_age_ms": 250.0, "include_held": false, "held_max_ms": 0.0, "confidence": "minimum"}
+      "cadence": {
+        "mode": "on_input",
+        "max_rate_hz": 60.0
+      },
+      "validity": {
+        "min_valid_count": 1,
+        "min_observed_count": 1,
+        "max_age_ms": 250.0,
+        "include_held": false,
+        "held_max_ms": 0.0,
+        "confidence": "minimum"
+      }
     },
     {
       "aggregator_id": "focused-verticality",
@@ -39,12 +91,36 @@
       "derived_source_id": "focused_verticality",
       "output_channel": "value",
       "inputs": [
-        {"channel": "harmocap.slot_0_verticality", "include_when": {"channel": "harmocap.slot_0_focused", "op": "eq", "value": 1.0}},
-        {"channel": "harmocap.slot_1_verticality", "include_when": {"channel": "harmocap.slot_1_focused", "op": "eq", "value": 1.0}}
+        {
+          "channel": "harmocap.slot_0_verticality",
+          "include_when": {
+            "channel": "harmocap.slot_0_focused",
+            "op": "eq",
+            "value": 1.0
+          }
+        },
+        {
+          "channel": "harmocap.slot_1_verticality",
+          "include_when": {
+            "channel": "harmocap.slot_1_focused",
+            "op": "eq",
+            "value": 1.0
+          }
+        }
       ],
       "operator": "mean",
-      "cadence": {"mode": "on_input", "max_rate_hz": 60.0},
-      "validity": {"min_valid_count": 1, "min_observed_count": 1, "max_age_ms": 250.0, "include_held": false, "held_max_ms": 0.0, "confidence": "minimum"}
+      "cadence": {
+        "mode": "on_input",
+        "max_rate_hz": 60.0
+      },
+      "validity": {
+        "min_valid_count": 1,
+        "min_observed_count": 1,
+        "max_age_ms": 250.0,
+        "include_held": false,
+        "held_max_ms": 0.0,
+        "confidence": "minimum"
+      }
     },
     {
       "aggregator_id": "focused-symmetry",
@@ -52,12 +128,36 @@
       "derived_source_id": "focused_symmetry",
       "output_channel": "value",
       "inputs": [
-        {"channel": "harmocap.slot_0_symmetry", "include_when": {"channel": "harmocap.slot_0_focused", "op": "eq", "value": 1.0}},
-        {"channel": "harmocap.slot_1_symmetry", "include_when": {"channel": "harmocap.slot_1_focused", "op": "eq", "value": 1.0}}
+        {
+          "channel": "harmocap.slot_0_symmetry",
+          "include_when": {
+            "channel": "harmocap.slot_0_focused",
+            "op": "eq",
+            "value": 1.0
+          }
+        },
+        {
+          "channel": "harmocap.slot_1_symmetry",
+          "include_when": {
+            "channel": "harmocap.slot_1_focused",
+            "op": "eq",
+            "value": 1.0
+          }
+        }
       ],
       "operator": "mean",
-      "cadence": {"mode": "on_input", "max_rate_hz": 60.0},
-      "validity": {"min_valid_count": 1, "min_observed_count": 1, "max_age_ms": 250.0, "include_held": false, "held_max_ms": 0.0, "confidence": "minimum"}
+      "cadence": {
+        "mode": "on_input",
+        "max_rate_hz": 60.0
+      },
+      "validity": {
+        "min_valid_count": 1,
+        "min_observed_count": 1,
+        "max_age_ms": 250.0,
+        "include_held": false,
+        "held_max_ms": 0.0,
+        "confidence": "minimum"
+      }
     },
     {
       "aggregator_id": "focused-elbow-r",
@@ -65,12 +165,36 @@
       "derived_source_id": "focused_elbow_r",
       "output_channel": "value",
       "inputs": [
-        {"channel": "harmocap.slot_0_angle_elbow_r", "include_when": {"channel": "harmocap.slot_0_focused", "op": "eq", "value": 1.0}},
-        {"channel": "harmocap.slot_1_angle_elbow_r", "include_when": {"channel": "harmocap.slot_1_focused", "op": "eq", "value": 1.0}}
+        {
+          "channel": "harmocap.slot_0_angle_elbow_r",
+          "include_when": {
+            "channel": "harmocap.slot_0_focused",
+            "op": "eq",
+            "value": 1.0
+          }
+        },
+        {
+          "channel": "harmocap.slot_1_angle_elbow_r",
+          "include_when": {
+            "channel": "harmocap.slot_1_focused",
+            "op": "eq",
+            "value": 1.0
+          }
+        }
       ],
       "operator": "mean",
-      "cadence": {"mode": "on_input", "max_rate_hz": 60.0},
-      "validity": {"min_valid_count": 1, "min_observed_count": 1, "max_age_ms": 250.0, "include_held": false, "held_max_ms": 0.0, "confidence": "minimum"}
+      "cadence": {
+        "mode": "on_input",
+        "max_rate_hz": 60.0
+      },
+      "validity": {
+        "min_valid_count": 1,
+        "min_observed_count": 1,
+        "max_age_ms": 250.0,
+        "include_held": false,
+        "held_max_ms": 0.0,
+        "confidence": "minimum"
+      }
     }
   ],
   "routes": [
@@ -79,115 +203,399 @@
       "route_version": 1,
       "enabled": true,
       "label": "Dancer energy sounds harmonic 1 (fundamental / phase anchor), with a floor",
-      "inputs": [{"channel": "focused_energy.value"}],
-      "transforms": [{"type": "scale_range", "in": [0.0, 1.0], "out": [0.55, 0.9], "clamp": true}],
-      "destination": {"instrument_id": "shaper", "capability": "harmonic_envelope", "bindings": {"N": 1}, "argument": "gain"},
-      "validity": {"held": "reject", "min_confidence": 0.5, "invalid": "release"}
+      "inputs": [
+        {
+          "channel": "focused_energy.value"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "scale_range",
+          "in": [
+            0.0,
+            1.0
+          ],
+          "out": [
+            0.55,
+            0.9
+          ],
+          "clamp": true
+        }
+      ],
+      "destination": {
+        "instrument_id": "shaper",
+        "capability": "harmonic_envelope",
+        "bindings": {
+          "N": 1
+        },
+        "argument": "gain"
+      },
+      "validity": {
+        "held": "reject",
+        "min_confidence": 0.5,
+        "invalid": "release"
+      }
     },
     {
       "route_id": "sound-harmonic-2",
       "route_version": 1,
       "enabled": true,
       "label": "Dancer energy sounds harmonic 2, with a floor",
-      "inputs": [{"channel": "focused_energy.value"}],
-      "transforms": [{"type": "scale_range", "in": [0.0, 1.0], "out": [0.45, 0.78], "clamp": true}],
-      "destination": {"instrument_id": "shaper", "capability": "harmonic_envelope", "bindings": {"N": 2}, "argument": "gain"},
-      "validity": {"held": "reject", "min_confidence": 0.5, "invalid": "release"}
+      "inputs": [
+        {
+          "channel": "focused_energy.value"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "scale_range",
+          "in": [
+            0.0,
+            1.0
+          ],
+          "out": [
+            0.45,
+            0.78
+          ],
+          "clamp": true
+        }
+      ],
+      "destination": {
+        "instrument_id": "shaper",
+        "capability": "harmonic_envelope",
+        "bindings": {
+          "N": 2
+        },
+        "argument": "gain"
+      },
+      "validity": {
+        "held": "reject",
+        "min_confidence": 0.5,
+        "invalid": "release"
+      }
     },
     {
       "route_id": "sound-harmonic-3",
       "route_version": 1,
       "enabled": true,
       "label": "Dancer energy sounds harmonic 3, with a floor",
-      "inputs": [{"channel": "focused_energy.value"}],
-      "transforms": [{"type": "scale_range", "in": [0.0, 1.0], "out": [0.35, 0.66], "clamp": true}],
-      "destination": {"instrument_id": "shaper", "capability": "harmonic_envelope", "bindings": {"N": 3}, "argument": "gain"},
-      "validity": {"held": "reject", "min_confidence": 0.5, "invalid": "release"}
+      "inputs": [
+        {
+          "channel": "focused_energy.value"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "scale_range",
+          "in": [
+            0.0,
+            1.0
+          ],
+          "out": [
+            0.35,
+            0.66
+          ],
+          "clamp": true
+        }
+      ],
+      "destination": {
+        "instrument_id": "shaper",
+        "capability": "harmonic_envelope",
+        "bindings": {
+          "N": 3
+        },
+        "argument": "gain"
+      },
+      "validity": {
+        "held": "reject",
+        "min_confidence": 0.5,
+        "invalid": "release"
+      }
     },
     {
       "route_id": "sound-harmonic-4",
       "route_version": 1,
       "enabled": true,
       "label": "Dancer energy sounds harmonic 4, with a floor",
-      "inputs": [{"channel": "focused_energy.value"}],
-      "transforms": [{"type": "scale_range", "in": [0.0, 1.0], "out": [0.28, 0.56], "clamp": true}],
-      "destination": {"instrument_id": "shaper", "capability": "harmonic_envelope", "bindings": {"N": 4}, "argument": "gain"},
-      "validity": {"held": "reject", "min_confidence": 0.5, "invalid": "release"}
+      "inputs": [
+        {
+          "channel": "focused_energy.value"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "scale_range",
+          "in": [
+            0.0,
+            1.0
+          ],
+          "out": [
+            0.28,
+            0.56
+          ],
+          "clamp": true
+        }
+      ],
+      "destination": {
+        "instrument_id": "shaper",
+        "capability": "harmonic_envelope",
+        "bindings": {
+          "N": 4
+        },
+        "argument": "gain"
+      },
+      "validity": {
+        "held": "reject",
+        "min_confidence": 0.5,
+        "invalid": "release"
+      }
     },
     {
       "route_id": "sound-harmonic-5",
       "route_version": 1,
       "enabled": true,
       "label": "Dancer energy sounds harmonic 5, with a floor",
-      "inputs": [{"channel": "focused_energy.value"}],
-      "transforms": [{"type": "scale_range", "in": [0.0, 1.0], "out": [0.22, 0.48], "clamp": true}],
-      "destination": {"instrument_id": "shaper", "capability": "harmonic_envelope", "bindings": {"N": 5}, "argument": "gain"},
-      "validity": {"held": "reject", "min_confidence": 0.5, "invalid": "release"}
+      "inputs": [
+        {
+          "channel": "focused_energy.value"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "scale_range",
+          "in": [
+            0.0,
+            1.0
+          ],
+          "out": [
+            0.22,
+            0.48
+          ],
+          "clamp": true
+        }
+      ],
+      "destination": {
+        "instrument_id": "shaper",
+        "capability": "harmonic_envelope",
+        "bindings": {
+          "N": 5
+        },
+        "argument": "gain"
+      },
+      "validity": {
+        "held": "reject",
+        "min_confidence": 0.5,
+        "invalid": "release"
+      }
     },
     {
       "route_id": "expansion-to-h2-phase",
       "route_version": 1,
       "enabled": true,
       "label": "Body openness -> harmonic 2 phase (largest-scale morph)",
-      "inputs": [{"channel": "focused_expansion.value"}],
-      "transforms": [
-        {"type": "scale_range", "in": [0.0, 1.0], "out": [-30.0, 30.0], "clamp": true},
-        {"type": "phase_accumulator", "wrap_deg": 360.0, "max_dt_ms": 100.0}
+      "inputs": [
+        {
+          "channel": "focused_expansion.value"
+        }
       ],
-      "destination": {"instrument_id": "shaper", "capability": "harmonic_phase", "bindings": {"N": 2}, "argument": "phase_degrees"},
-      "validity": {"held": "reject", "min_confidence": 0.8, "invalid": "suppress"}
+      "transforms": [
+        {
+          "type": "scale_range",
+          "in": [
+            0.0,
+            1.0
+          ],
+          "out": [
+            -30.0,
+            30.0
+          ],
+          "clamp": true
+        },
+        {
+          "type": "phase_accumulator",
+          "wrap_deg": 360.0,
+          "max_dt_ms": 100.0
+        }
+      ],
+      "destination": {
+        "instrument_id": "shaper",
+        "capability": "harmonic_phase",
+        "bindings": {
+          "N": 2
+        },
+        "argument": "phase_degrees"
+      },
+      "validity": {
+        "held": "reject",
+        "min_confidence": 0.8,
+        "invalid": "suppress"
+      }
     },
     {
       "route_id": "verticality-to-h3-phase",
       "route_version": 1,
       "enabled": true,
       "label": "Posture up/down -> harmonic 3 phase",
-      "inputs": [{"channel": "focused_verticality.value"}],
-      "transforms": [
-        {"type": "scale_range", "in": [-1.0, 1.0], "out": [-28.0, 28.0], "clamp": true},
-        {"type": "phase_accumulator", "wrap_deg": 360.0, "max_dt_ms": 100.0}
+      "inputs": [
+        {
+          "channel": "focused_verticality.value"
+        }
       ],
-      "destination": {"instrument_id": "shaper", "capability": "harmonic_phase", "bindings": {"N": 3}, "argument": "phase_degrees"},
-      "validity": {"held": "reject", "min_confidence": 0.8, "invalid": "suppress"}
+      "transforms": [
+        {
+          "type": "scale_range",
+          "in": [
+            -1.0,
+            1.0
+          ],
+          "out": [
+            -28.0,
+            28.0
+          ],
+          "clamp": true
+        },
+        {
+          "type": "phase_accumulator",
+          "wrap_deg": 360.0,
+          "max_dt_ms": 100.0
+        }
+      ],
+      "destination": {
+        "instrument_id": "shaper",
+        "capability": "harmonic_phase",
+        "bindings": {
+          "N": 3
+        },
+        "argument": "phase_degrees"
+      },
+      "validity": {
+        "held": "reject",
+        "min_confidence": 0.8,
+        "invalid": "suppress"
+      }
     },
     {
       "route_id": "symmetry-to-h4-phase",
       "route_version": 1,
       "enabled": true,
       "label": "Body symmetry -> harmonic 4 phase",
-      "inputs": [{"channel": "focused_symmetry.value"}],
-      "transforms": [
-        {"type": "scale_range", "in": [0.0, 1.0], "out": [-22.0, 22.0], "clamp": true},
-        {"type": "phase_accumulator", "wrap_deg": 360.0, "max_dt_ms": 100.0}
+      "inputs": [
+        {
+          "channel": "focused_symmetry.value"
+        }
       ],
-      "destination": {"instrument_id": "shaper", "capability": "harmonic_phase", "bindings": {"N": 4}, "argument": "phase_degrees"},
-      "validity": {"held": "reject", "min_confidence": 0.8, "invalid": "suppress"}
+      "transforms": [
+        {
+          "type": "scale_range",
+          "in": [
+            0.0,
+            1.0
+          ],
+          "out": [
+            -22.0,
+            22.0
+          ],
+          "clamp": true
+        },
+        {
+          "type": "phase_accumulator",
+          "wrap_deg": 360.0,
+          "max_dt_ms": 100.0
+        }
+      ],
+      "destination": {
+        "instrument_id": "shaper",
+        "capability": "harmonic_phase",
+        "bindings": {
+          "N": 4
+        },
+        "argument": "phase_degrees"
+      },
+      "validity": {
+        "held": "reject",
+        "min_confidence": 0.8,
+        "invalid": "suppress"
+      }
     },
     {
       "route_id": "elbow-to-h5-phase",
       "route_version": 1,
       "enabled": true,
       "label": "Right arm extension -> harmonic 5 phase (finest morph)",
-      "inputs": [{"channel": "focused_elbow_r.value"}],
-      "transforms": [
-        {"type": "scale_range", "in": [0.0, 1.0], "out": [-24.0, 24.0], "clamp": true},
-        {"type": "phase_accumulator", "wrap_deg": 360.0, "max_dt_ms": 100.0}
+      "inputs": [
+        {
+          "channel": "focused_elbow_r.value"
+        }
       ],
-      "destination": {"instrument_id": "shaper", "capability": "harmonic_phase", "bindings": {"N": 5}, "argument": "phase_degrees"},
-      "validity": {"held": "reject", "min_confidence": 0.8, "invalid": "suppress"}
+      "transforms": [
+        {
+          "type": "scale_range",
+          "in": [
+            0.0,
+            1.0
+          ],
+          "out": [
+            -24.0,
+            24.0
+          ],
+          "clamp": true
+        },
+        {
+          "type": "phase_accumulator",
+          "wrap_deg": 360.0,
+          "max_dt_ms": 100.0
+        }
+      ],
+      "destination": {
+        "instrument_id": "shaper",
+        "capability": "harmonic_phase",
+        "bindings": {
+          "N": 5
+        },
+        "argument": "phase_degrees"
+      },
+      "validity": {
+        "held": "reject",
+        "min_confidence": 0.8,
+        "invalid": "suppress"
+      }
     },
     {
       "route_id": "ecg-beat-to-master-pulse",
-      "route_version": 2,
+      "route_version": 1,
       "enabled": true,
       "label": "Heartbeat -> master gain pulse that breathes (swells per beat, decays with the measured RR interval)",
-      "inputs": [{"channel": "ecg.beat"}],
-      "transforms": [
-        {"type": "beat_envelope", "peak": 1.0, "floor": 0.8, "threshold": 0.5, "tau_ratio": 0.3, "min_interval_ms": 300.0}
+      "inputs": [
+        {
+          "channel": "ecg.beat"
+        }
       ],
-      "destination": {"instrument_id": "shaper", "capability": "master_gain", "bindings": {}, "argument": "gain"},
-      "validity": {"held": "reject", "min_confidence": 0.8, "invalid": "release"}
+      "transforms": [
+        {
+          "type": "beat_envelope",
+          "peak": 1.0,
+          "floor": 0.8,
+          "threshold": 0.5,
+          "tau_ratio": 0.3,
+          "min_interval_ms": 300.0
+        }
+      ],
+      "destination": {
+        "instrument_id": "shaper",
+        "capability": "master_gain",
+        "bindings": {},
+        "argument": "gain"
+      },
+      "validity": {
+        "held": "reject",
+        "min_confidence": 0.8,
+        "invalid": "release"
+      }
     }
   ],
-  "transition": {"policy": "crossfade", "duration_ms": 300.0, "await_valid_ms": 500.0}
+  "transition": {
+    "policy": "crossfade",
+    "duration_ms": 300.0,
+    "await_valid_ms": 500.0
+  }
 }
