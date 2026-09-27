@@ -12,12 +12,14 @@ and how to prove it without hardware. The piece:
 
 The full live stack needs, at minimum:
 
-- **Linux** (the audio path uses PipeWire/JACK; `start-live-stack.sh` launches the
-  shaper under `pw-jack`). macOS is fine for the headless smoke (§6) but **cannot**
-  run the live stack.
-- **NVIDIA GPU with CUDA 12** for HarMoCAP pose. `HarMoCAP/requirements.lock` pins
-  CUDA-12 wheels; there is no realtime CPU path for live dance. (A recent Intel
-  Mac was checked and rejected: no CUDA, no MPS.)
+- **Linux** remains the production target for the one-command launcher and the
+  R24 audio path. A manual macOS stack was nevertheless proven live on an Intel
+  Mac in July 2026 (C920e, CPU HarMoCAP, CoreAudio Shaper, laser output); the
+  Linux launcher itself should not be assumed portable without checking its
+  current audio-device commands.
+- **NVIDIA GPU with CUDA 12** is recommended for the full HarMoCAP model and
+  sustained performance. CPU operation is available for rehearsal and fallback
+  (`--harmocap-device cpu`); use a lightweight HarMoCAP preset/model when needed.
 - **SuperCollider** (`scsynth`/`sclang`) for beacon-spatial — optional for Latido
   if you launch with `--beacon-mute` or `--no-beacon`, but the launcher expects it
   present unless skipped.
@@ -32,7 +34,7 @@ mkdir -p ~/Projects && cd ~/Projects
 git clone https://github.com/AlterMundi/harmonic-weaver
 git clone https://github.com/AlterMundi/harmonic-shaper
 git clone https://github.com/AlterMundi/beacon-spatial
-git clone <HarMoCAP remote>              # AnnieScigliano/HarMoCAP or the AlterMundi/Mar-IA-no mirror
+git clone https://github.com/AlterMundi/HarMoCAP
 git clone https://github.com/AnnieScigliano/latido
 ```
 
@@ -70,10 +72,9 @@ ln -sf ../../../latido/scenes/latido.scene.json \
    ~/Projects/harmonic-weaver/rehearsal/scenes/latido.scene.json
 ```
 
-**Safety profile:** Latido drives `harmonic_phase` + `master_gain`; the shaper
+**Safety profile:** Latido drives `harmonic_phase` + `master_gain`; the Shaper
 safety profile must reset those or the scene won't activate (`unsafe_instrument`).
-This is handled by weaver PR `feat/shaper-safety-phase-master` — make sure it's
-merged (or on your checked-out branch) before launching.
+Those defaults are present on current Weaver `main`.
 
 ## 4. The laser rig (physical, no software)
 
@@ -149,7 +150,7 @@ The starting numbers are guesses — tune on the rig:
 | Symptom | Fix |
 |---|---|
 | `unknown capability shaper.<name>` on install | shaper clone stale — `git pull` harmonic-shaper |
-| Scene won't activate: `unsafe_instrument` | safety-profile PR not merged (§3) |
+| Scene won't activate: `unsafe_instrument` | Weaver/Shaper revisions are out of sync; update both and re-run the scene validator |
 | `new scenes must start at scene_version 1` | scene_version must be `1` for a first push |
 | Figure dark / silent | no focused dancer in frame (envelopes only sound while tracked); establish the camera view |
 | HarMoCAP CUDA/ReID crash | `--harmocap-device cpu` fallback; the stack also has supervised GPU restart |

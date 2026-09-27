@@ -49,8 +49,8 @@ BEAT_PERIOD_S = 60.0 / BPM
 
 def latido_shaper_safety(contract_id: str) -> dict:
     """Ensure the shaper safety profile resets harmonic_phase (1-5) + master_gain,
-    which Latido drives. Once weaver PR feat/shaper-safety-phase-master is merged
-    these are already present, so append only what's missing (idempotent)."""
+    which Latido drives. Current Weaver main already includes them; retaining
+    this idempotent guard also makes the smoke useful against older checkouts."""
     profile = shaper_safety_profile(contract_id)
     have = {(d["capability"], tuple(sorted(d.get("bindings", {}).items())))
             for d in profile["reset_defaults"]}

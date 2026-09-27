@@ -94,11 +94,12 @@ python3 scripts/validate_scene.py            # assumes ../harmonic-weaver
 # or: python3 scripts/validate_scene.py /path/to/harmonic-weaver
 ```
 
-Expected: `OK scene 'latido' compiled — 4 aggregators, 5 routes`, with the phase
-routes resolving to `/digital/harmonic/{2..5}/phase` and the beat to
+Expected: `OK scene 'latido' compiled — 5 aggregators, 10 routes`, with five
+envelope routes resolving to `/digital/harmonic/{1..5}/envelope`, four phase
+routes resolving to `/digital/harmonic/{2..5}/phase`, and the beat resolving to
 `/digital/master`.
 
-## Run it (once the weaver branch is merged)
+## Run it
 
 Load `scenes/latido.scene.json` through the weaver's Stage WS API, the way
 `rehearsal/push_scene.py` loads `event_demo`. Rehearse with no hardware by
@@ -115,10 +116,17 @@ driver and `cymatic-control/test_ecg_stream.py` through the ecg driver.
 
 ## Status
 
-`v0.3` — 5 aggregators, 10 routes; compiles against the real weaver compiler.
-- `phase_accumulator` transform: **merged** into `harmonic-weaver` (PR #1).
-- `beat_envelope` transform (breathing heartbeat pulse): **PR open** on branch
-  `feat/beat-envelope-transform` — the scene depends on it merging.
-- `harmonic_envelope` capability is validated against a *synthesized* manifest
-  entry (the local artifact predates it) — **confirm against the live Shaper
-  manifest** on first launch.
+`v0.4` — revalidated 2026-09-27 against the current public
+`harmonic-weaver` engine and real `harmonic-shaper` manifest:
+
+- `phase_accumulator`, `beat_envelope`, and the required Shaper safety defaults
+  are present on Weaver `main`.
+- `harmonic_envelope`, `harmonic_phase`, and `master_gain` are present in the
+  real Shaper contract.
+- `scripts/validate_scene.py`: **5 aggregators, 10 routes**, compile clean.
+- `scripts/latido_smoke.py`: **PASS** with synthetic HarMoCAP + ECG frames.
+
+The newer Pads/Bands work uses source-owned envelopes for simultaneous hands
+and people. Latido intentionally remains a focus-follow piece with one active
+dancer driving the shared H1-H5 field; moving it to source-owned polyphony is a
+future artistic decision, not a compatibility requirement.
